@@ -1,28 +1,45 @@
 <script setup>
+import { onMounted } from 'vue';
+
 import Header from './components/Header.vue'
+import Card from './components/Card.vue';
+import CardList from './components/CardList.vue';
+import Drawer from './components/Drawer.vue';
+
+onMounted(() => {
+
+});
 </script>
 
 <template>
-  <div class="bg-white w-4/5 h-screen m-auto rounded-xl shadow-xl mt-14">
+  <div class="bg-white w-4/5 m-auto rounded-xl shadow-xl mt-14">
     <Header />
-    <div>
-      <div
-        class="relative m-10 border border-slate-100 rounded-3xl p-8 cursor-pointer hover:-translate-y-2"
-      >
-        <img src="/like-2.svg" alt="Like 1" class="absolute left-8 top-8" />
-        <img src="/sneakers/sneakers-1.jpg" alt="" />
-        <p>Мужские Кроссовки Nike Blazer Mid Suede</p>
-        <div class="flex justify-between">
-          <div class="flex flex-col">
-            <span class="text-slate-400">Цена:</span>
-            <b>1205 руб.</b>
+    <!-- <Drawer/> -->
+    <div class="p-10">
+      <div class="flex justify-between items-center">
+        <h2 class="text-3xl font-bold mb-8">Все кроссовки</h2>
+
+        <div class="flex gap-5">
+          <select class="py-2 px-3 border rounded-md outline-none">
+            <option>По названию</option>
+            <option>По цене (дешевые)</option>
+            <option>По цене (дорогие)</option>
+          </select>
+          <div class="relative">
+            <img class="absolute left-4 top-3" src="/search.svg" alt="">
+            <input class="border rounded-md py-2 pl-12 pr-4 outline-none focus:border-gray-400" placeholder="Поиск..." >
           </div>
-          <img src="/plus.svg" alt="" />
         </div>
+
+      </div>
+
+      <div class="mt-10">
+        <CardList :items="items"/>
       </div>
     </div>
+
   </div>
-  <MyHello />
+
 </template>
 
 <style scoped></style>
