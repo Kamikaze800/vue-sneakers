@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref, watch } from 'vue'
+import { onMounted, ref, watch, reactive } from 'vue'
 
 import Header from './components/Header.vue'
 import Card from './components/Card.vue'
@@ -10,32 +10,35 @@ import axios from 'axios'
 const items = ref([])
 
 const onChangeSelect = event => {
-  sortBy.value = event.target.value
+  filters.sortBy = event.target.value
 }
 
-const filters = ref({
-  sortBy: ref(''),
-  searchQuery: ref(''),
+const onChangeSearchInput = event => {
+  filters.searchQuery = event.target.value
+}
+const filters = reactive({
+  sortBy: 'title',
+  searchQuery: '',
 })
 
-onMounted(async () => {
+const fetchItems = async () => {
   try {
-    const { data } = await axios.get('https://8fb2ce8dc0a90345.mokky.dev/items')
+  const params = {
+    sortBy: filters.sortBy,
+    // searchQuery: filters.searchQuery,
+  }
+  if (filters.searchQuery){
+    params.title = `*${filters.searchQuery}*`
+  }
+
+    const { data } = await axios.get('https://8fb2ce8dc0a90345.mokky.dev/items', {params})
     items.value = data
   } catch (e) {
     console.error(e)
   }
-})
-watch(sortBy, async () => {
-  try {
-    const { data } = await axios.get(
-      'https://8fb2ce8dc0a90345.mokky.dev/items/?sortBy=' + sortBy.value,
-    )
-    items.value = data
-  } catch (e) {
-    console.log(ошибка, e)
-  }
-})
+}
+onMounted(fetchItems)
+watch(filters, fetchItems)
 </script>
 
 <template>
@@ -58,6 +61,7 @@ watch(sortBy, async () => {
           <div class="relative">
             <img class="absolute left-4 top-3" src="/search.svg" alt="" />
             <input
+            @input="onChangeSearchInput"
               class="border rounded-md py-2 pl-12 pr-4 outline-none focus:border-gray-400"
               placeholder="Поиск..."
             />
