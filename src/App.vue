@@ -1,14 +1,24 @@
 <script setup>
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue'
 
 import Header from './components/Header.vue'
-import Card from './components/Card.vue';
-import CardList from './components/CardList.vue';
-import Drawer from './components/Drawer.vue';
+import Card from './components/Card.vue'
+import CardList from './components/CardList.vue'
+import Drawer from './components/Drawer.vue'
+import axios from 'axios'
 
-onMounted(() => {
+const items = ref([])
+const sortBy = ref('')
+const searchQuery = ref('')
 
-});
+onMounted(async () => {
+  try {
+    const { data } = await axios.get('https://8fb2ce8dc0a90345.mokky.dev/items')
+    items.value = data
+  } catch (e) {
+    console.error(e)
+  }
+})
 </script>
 
 <template>
@@ -26,20 +36,20 @@ onMounted(() => {
             <option>По цене (дорогие)</option>
           </select>
           <div class="relative">
-            <img class="absolute left-4 top-3" src="/search.svg" alt="">
-            <input class="border rounded-md py-2 pl-12 pr-4 outline-none focus:border-gray-400" placeholder="Поиск..." >
+            <img class="absolute left-4 top-3" src="/search.svg" alt="" />
+            <input
+              class="border rounded-md py-2 pl-12 pr-4 outline-none focus:border-gray-400"
+              placeholder="Поиск..."
+            />
           </div>
         </div>
-
       </div>
 
       <div class="mt-10">
-        <CardList :items="items"/>
+        <CardList :items="items" />
       </div>
     </div>
-
   </div>
-
 </template>
 
 <style scoped></style>
