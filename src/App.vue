@@ -21,18 +21,36 @@ const filters = reactive({
   searchQuery: '',
 })
 
+const fetchFavorites = async () => {
+  try {
+    const { data } = await axios.get(
+      'https://8fb2ce8dc0a90345.mokky.dev/favorites',
+      { params },
+    )
+    items.value = data
+  } catch (e) {
+    console.error(e)
+  }
+}
+
 const fetchItems = async () => {
   try {
-  const params = {
-    sortBy: filters.sortBy,
-    // searchQuery: filters.searchQuery,
-  }
-  if (filters.searchQuery){
-    params.title = `*${filters.searchQuery}*`
-  }
-
-    const { data } = await axios.get('https://8fb2ce8dc0a90345.mokky.dev/items', {params})
-    items.value = data
+    const params = {
+      sortBy: filters.sortBy,
+      // searchQuery: filters.searchQuery,
+    }
+    if (filters.searchQuery) {
+      params.title = `*${filters.searchQuery}*`
+    }
+    const { data } = await axios.get(
+      'https://8fb2ce8dc0a90345.mokky.dev/items',
+      { params },
+    )
+    items.value = data.map(obj => ({
+      ...obj,
+      isFavorite: false,
+      isAdded: false,
+    }))
   } catch (e) {
     console.error(e)
   }
@@ -61,7 +79,7 @@ watch(filters, fetchItems)
           <div class="relative">
             <img class="absolute left-4 top-3" src="/search.svg" alt="" />
             <input
-            @input="onChangeSearchInput"
+              @input="onChangeSearchInput"
               class="border rounded-md py-2 pl-12 pr-4 outline-none focus:border-gray-400"
               placeholder="Поиск..."
             />
