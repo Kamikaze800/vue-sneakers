@@ -67,8 +67,14 @@ const fetchItems = async () => {
 }
 
 const addToFavorite = async(item) => {
-  item.isFavorite = !item.isFavorite
-  console.log(item)
+  try{
+    const obj = {
+      parentId: item.id
+    };
+    const { data } = await axios.get('https://8fb2ce8dc0a90345.mokky.dev/favorites', obj)
+  }catch(e){
+    console.log(e)
+  }
 
 }
 provide('addToFavorite', addToFavorite)
