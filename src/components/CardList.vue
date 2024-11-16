@@ -1,11 +1,10 @@
 <script setup>
-import { inject } from 'vue'
 import Card from './Card.vue'
 defineProps({
   items: Array,
 })
 
-const emit = defineEmits(['addToFavorite']);
+const emit = defineEmits('addToFavorite');
 
 
 </script>
