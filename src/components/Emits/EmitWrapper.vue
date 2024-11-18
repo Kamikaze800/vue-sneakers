@@ -1,13 +1,16 @@
 <script setup>
-import Button from './Button.vue';
-import { ref } from 'vue';
+import Button from './Button.vue'
+import { ref } from 'vue'
+import Text from './Text.vue'
 
-let fonstSize = ref(16)
+let fontSize = ref(16)
 
 function recieveFontSize(sizeFromButton) {
-  fonstSize.value = sizeFromButton
+  fontSize.value = sizeFromButton
+  console.log(fontSize.value)
 }
 </script>
 <template>
-<Button @sendFontSize="recieveFontSize"> </Button>
+  <Button @sendFontSize="recieveFontSize"></Button>
+  <Text :size="fontSize"></Text>
 </template>

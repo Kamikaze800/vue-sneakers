@@ -1,11 +1,14 @@
 <script setup>
 import { onMounted, ref, watch, reactive, provide } from 'vue'
+import axios from 'axios'
 
 import Header from './components/Header.vue'
 import Card from './components/Card.vue'
 import CardList from './components/CardList.vue'
 import Drawer from './components/Drawer.vue'
-import axios from 'axios'
+import Button from './components/Emits/Button.vue'
+import Text from './components/Emits/Text.vue'
+import EmitWrapper from './components/Emits/EmitWrapper.vue'
 
 const items = ref([])
 
@@ -23,21 +26,24 @@ const filters = reactive({
 
 const fetchFavorites = async () => {
   try {
-    const { data: favorites } = await axios.get('https://8fb2ce8dc0a90345.mokky.dev/favorites')
-
-    items.value = items.value.map(item => {{
-      const favorite = favorites.find(fav => fav.parentId === item.id);
-
-      if (!favorite){
-        return item;
-      }
-      return {
-        ...item,
-        isFavorite: true,
-        favoriteId: favorite.id,
-      }
-      }}
+    const { data: favorites } = await axios.get(
+      'https://8fb2ce8dc0a90345.mokky.dev/favorites',
     )
+
+    items.value = items.value.map(item => {
+      {
+        const favorite = favorites.find(fav => fav.parentId === item.id)
+
+        if (!favorite) {
+          return item
+        }
+        return {
+          ...item,
+          isFavorite: true,
+          favoriteId: favorite.id,
+        }
+      }
+    })
   } catch (e) {
     console.error(e)
   }
@@ -66,26 +72,28 @@ const fetchItems = async () => {
   }
 }
 
-const addToFavorite = async(item) => {
-  try{
+const addToFavorite = async item => {
+  try {
+    console.log(item)
     const obj = {
-      parentId: item.id
-    };
-    const { data } = await axios.get('https://8fb2ce8dc0a90345.mokky.dev/favorites', obj)
-  }catch(e){
+      parentId: item.id,
+    }
+    console.log(obj)
+    const { data } = await axios.get(
+      'https://8fb2ce8dc0a90345.mokky.dev/favorites',
+      obj,
+    )
+    console.log(data)
+  } catch (e) {
     console.log(e)
   }
-
 }
-provide('addToFavorite', addToFavorite)
 
 onMounted(async () => {
-  await fetchItems();
-  await fetchFavorites();
+  await fetchItems()
+  await fetchFavorites()
 })
 watch(filters, fetchItems)
-
-
 </script>
 
 <template>
@@ -115,6 +123,8 @@ watch(filters, fetchItems)
           </div>
         </div>
       </div>
+
+      <!-- <EmitWrapper></EmitWrapper> -->
 
       <div class="mt-10">
         <CardList :items="items" @addToFavorite="addToFavorite" />
