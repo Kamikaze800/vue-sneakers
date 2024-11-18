@@ -12,6 +12,16 @@ import EmitWrapper from './components/Emits/EmitWrapper.vue'
 
 const items = ref([])
 
+const drawerOpen = ref(true)
+
+const closeDrawer = () => {
+  drawerOpen.value = false
+}
+
+const openDrawer = () => {
+  drawerOpen.value = true
+}
+
 const onChangeSelect = event => {
   filters.sortBy = event.target.value
 }
@@ -65,6 +75,7 @@ const fetchItems = async () => {
     items.value = data.map(obj => ({
       ...obj,
       isFavorite: false,
+      favoriteId: null,
       isAdded: false,
     }))
   } catch (e) {
@@ -72,21 +83,30 @@ const fetchItems = async () => {
   }
 }
 
-const addToFavorite = async item => {
+const addToFavorite = async (item) => {
+
   try {
-    console.log(item)
-    const obj = {
-      parentId: item.id,
+    if (!item.isFavorite) {
+      item.isFavorite = true;
+      const obj = {
+        parentId: item.id,
+      }
+      const { data } = await axios.post(
+        'https://8fb2ce8dc0a90345.mokky.dev/favorites',
+        obj,
+      )
+      item.favoriteId = data.id
+      console.log(data)
+    } else {
+      item.isFavorite = false
+      await axios.delete(`https://8fb2ce8dc0a90345.mokky.dev/favorites/${item.favoriteId}`)
+
+      item.favoriteId = null
     }
-    console.log(obj)
-    const { data } = await axios.get(
-      'https://8fb2ce8dc0a90345.mokky.dev/favorites',
-      obj,
-    )
-    console.log(data)
   } catch (e) {
     console.log(e)
   }
+
 }
 
 onMounted(async () => {
@@ -94,32 +114,32 @@ onMounted(async () => {
   await fetchFavorites()
 })
 watch(filters, fetchItems)
+
+provide('cartActions',{
+  closeDrawer,
+  openDrawer
+})
 </script>
 
 <template>
+  <Drawer v-if="drawerOpen" />
   <div class="bg-white w-4/5 m-auto rounded-xl shadow-xl mt-14">
-    <Header />
-    <!-- <Drawer/> -->
+    <Header @open-drawer="openDrawer"/>
+
     <div class="p-10">
       <div class="flex justify-between items-center">
         <h2 class="text-3xl font-bold mb-8">Все кроссовки</h2>
 
         <div class="flex gap-5">
-          <select
-            @change="onChangeSelect"
-            class="py-2 px-3 border rounded-md outline-none"
-          >
+          <select @change="onChangeSelect" class="py-2 px-3 border rounded-md outline-none">
             <option value="title">По названию</option>
             <option value="price">По цене (дешевые)</option>
             <option value="-price">По цене (дорогие)</option>
           </select>
           <div class="relative">
             <img class="absolute left-4 top-3" src="/search.svg" alt="" />
-            <input
-              @input="onChangeSearchInput"
-              class="border rounded-md py-2 pl-12 pr-4 outline-none focus:border-gray-400"
-              placeholder="Поиск..."
-            />
+            <input @input="onChangeSearchInput"
+              class="border rounded-md py-2 pl-12 pr-4 outline-none focus:border-gray-400" placeholder="Поиск..." />
           </div>
         </div>
       </div>
@@ -127,7 +147,7 @@ watch(filters, fetchItems)
       <!-- <EmitWrapper></EmitWrapper> -->
 
       <div class="mt-10">
-        <CardList :items="items" @addToFavorite="addToFavorite" />
+        <CardList :items="items" @add-to-favorite="addToFavorite" />
       </div>
     </div>
   </div>
