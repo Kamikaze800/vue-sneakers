@@ -16,10 +16,13 @@ const cart = ref([])
 const totalPrice = computed(() => cart.value.reduce((sum, item) => sum + item.price, 0))
 const vatPrice = computed(() => Math.round(totalPrice.value / 100 * 5))
 
+const isCreatingOrder = ref(false)
+
 const createOrder = async () => {
   try {
-    const { data } = await axios.post('https://8fb2ce8dc0a90345.mokky.dev/orders', {
-      items: cart,
+    isCreatingOrder.value = true
+    const { data } = await axios.post(`https://8fb2ce8dc0a90345.mokky.dev/orders`, {
+      items: cart.value,
       totalPrice: totalPrice.value,
     })
     console.log(data)
@@ -28,7 +31,10 @@ const createOrder = async () => {
   } catch (e) {
     console.log(e)
   }
+  isCreatingOrder.value = false
 }
+const cartIsEmpty = computed(() => cart.value.length === 0)
+const cartButtonDisabled = computed(() => isCreatingOrder.value || cartIsEmpty.value)
 
 const drawerOpen = ref(false)
 
@@ -112,7 +118,6 @@ const addToCartPlus = item => {
   } else {
     addToCart(item)
   }
-  console.log(item)
 }
 const addToFavorite = async item => {
   try {
@@ -144,6 +149,14 @@ onMounted(async () => {
   await fetchFavorites()
 })
 watch(filters, fetchItems)
+watch(cart, () =>{
+  items.value = items.value.map(
+    (item) => ({
+    ...item,
+    isAdded: false
+  })
+)
+})
 
 provide('cart', {
   cart,
@@ -155,7 +168,8 @@ provide('cart', {
 </script>
 
 <template>
-  <Drawer :vat-price="vatPrice" :total-price="totalPrice" @create-order="createOrder" v-if="drawerOpen" />
+  <Drawer :vat-price="vatPrice" :total-price="totalPrice" @create-order="createOrder"
+    :is-creating-order="isCreatingOrder" :cart-button-disabled="cartButtonDisabled" v-if="drawerOpen" />
   <div class="bg-white w-4/5 m-auto rounded-xl shadow-xl mt-14">
     <Header :total-price="totalPrice" @open-drawer="openDrawer" />
 

@@ -7,7 +7,8 @@ const emit = defineEmits(['createOrder'])
 defineProps({
   totalPrice: Number,
   vatPrice: Number,
-
+  isCreatingOrder: Boolean,
+  cartButtonDisabled: Boolean
 })
 const { closeDrawer } = inject('cart')
 </script>
@@ -29,7 +30,7 @@ const { closeDrawer } = inject('cart')
         <div class="flex-1 border-b border-dashed"></div>
         <b>{{ vatPrice }} руб</b>
       </div>
-      <button :disabled="totalPrice ? false : true" @click="() => emit('createOrder')"
+      <button :disabled="cartButtonDisabled" @click="() => emit('createOrder')"
         class=" mt-4 bg-lime-500 w-full rounded-xl py-3 text-white hover:bg-lime-600 transition active:bg-lime-700 disabled:bg-slate-300 cursor-pointer">
         Оформить закакз
       </button>
