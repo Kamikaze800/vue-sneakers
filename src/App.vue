@@ -30,8 +30,10 @@ const createOrder = async () => {
     return data
   } catch (e) {
     console.log(e)
+  } finally {
+    isCreatingOrder.value = false
   }
-  isCreatingOrder.value = false
+
 }
 const cartIsEmpty = computed(() => cart.value.length === 0)
 const cartButtonDisabled = computed(() => isCreatingOrder.value || cartIsEmpty.value)
@@ -145,19 +147,31 @@ const addToFavorite = async item => {
   }
 }
 onMounted(async () => {
+  const localCart = localStorage.getItem('cart')
+  cart.value = localCart ? JSON.parse(localCart) : []
   await fetchItems()
   await fetchFavorites()
+  items.value = items.value.map(item => ({
+    ...item,
+    isAdded: cart.value.some(cartItem => cartItem.id === item.id)
+  }))
 })
 watch(filters, fetchItems)
-watch(cart, () =>{
+watch(cart, () => {
   items.value = items.value.map(
     (item) => ({
-    ...item,
-    isAdded: false
-  })
+      ...item,
+      isAdded: false
+    })
+  )
+}
 )
-})
 
+watch(cart, () => {
+  localStorage.setItem('cart', JSON.stringify(cart.value))
+},
+  { deep: true }
+)
 provide('cart', {
   cart,
   closeDrawer,
@@ -168,34 +182,12 @@ provide('cart', {
 </script>
 
 <template>
-  <Drawer :vat-price="vatPrice" :total-price="totalPrice" @create-order="createOrder"
-    :is-creating-order="isCreatingOrder" :cart-button-disabled="cartButtonDisabled" v-if="drawerOpen" />
+
   <div class="bg-white w-4/5 m-auto rounded-xl shadow-xl mt-14">
     <Header :total-price="totalPrice" @open-drawer="openDrawer" />
 
     <div class="p-10">
-      <div class="flex justify-between items-center">
-        <h2 class="text-3xl font-bold mb-8">Все кроссовки</h2>
 
-        <div class="flex gap-5">
-          <select @change="onChangeSelect" class="py-2 px-3 border rounded-md outline-none">
-            <option value="title">По названию</option>
-            <option value="price">По цене (дешевые)</option>
-            <option value="-price">По цене (дорогие)</option>
-          </select>
-          <div class="relative">
-            <img class="absolute left-4 top-3" src="/search.svg" alt="" />
-            <input @input="onChangeSearchInput"
-              class="border rounded-md py-2 pl-12 pr-4 outline-none focus:border-gray-400" placeholder="Поиск..." />
-          </div>
-        </div>
-      </div>
-
-      <!-- <EmitWrapper></EmitWrapper> -->
-
-      <div class="mt-10">
-        <CardList :items="items" @add-to-favorite="addToFavorite" @add-to-cart-plus="addToCartPlus" />
-      </div>
     </div>
   </div>
 </template>
