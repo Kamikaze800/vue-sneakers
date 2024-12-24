@@ -8,3 +8,4 @@ const app = createApp(App)
 
 app.use(autoAnimatePlugin)
 app.mount('#app')
+console.log(1)

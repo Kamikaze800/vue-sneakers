@@ -1,22 +1,16 @@
-import js from '@eslint/js'
-import pluginVue, { rules } from 'eslint-plugin-vue'
-import skipFormatting from '@vue/eslint-config-prettier/skip-formatting'
+import globals from 'globals'
+import pluginJs from '@eslint/js'
+import pluginVue from 'eslint-plugin-vue'
 
+/** @type {import('eslint').Linter.Config[]} */
 export default [
+  { files: ['**/*.{js,mjs,cjs,vue}'] },
+  { languageOptions: { globals: globals.browser } },
+  pluginJs.configs.recommended,
+  ...pluginVue.configs['flat/essential'],
   {
-    name: 'app/files-to-lint',
-    files: ['**/*.{js,mjs,jsx,vue}'],
     rules: {
-      'vue/multi-word-component-names': 'off', // Отключает требование многословных имен компонентов
+      'vue/multi-word-component-names': 'off', // Отключение правила
     },
   },
-
-  {
-    name: 'app/files-to-ignore',
-    ignores: ['**/dist/**', '**/dist-ssr/**', '**/coverage/**'],
-  },
-
-  js.configs.recommended,
-  ...pluginVue.configs['flat/essential'],
-  skipFormatting,
 ]
