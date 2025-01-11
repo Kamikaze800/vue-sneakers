@@ -7,6 +7,8 @@ export default {
         '--dark': '#464646',
         '--gray_white': '#E1E1E1',
         '--gray_white_white': '#EFEFEF',
+        '--red': '#FF4F4F',
+        '--yellow_dark': '#F1BF5D',
       },
     },
   },
