@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted } from 'vue'
-const emit = defineEmits(['openDrawer'])
+const emit = defineEmits(['openDrawer', 'closeDrawer'])
 defineProps({
   totalPrice: Number,
   vatPrice: Number,
@@ -78,6 +78,7 @@ const toggleMenu = () => {
     @click="toggleMenu"
   ></div>
   <div class="bg-white w-2/4 h-full fixed right-0 top-0 z-20" v-if="menuOpen">
+    <img src="/krest.svg" class="absolute right-0" @click="toggleMenu" alt="" />
     <ul ref="navLinks" class="mr-5 mt-14">
       <li
         @click="() => emit('openDrawer')"

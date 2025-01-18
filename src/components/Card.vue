@@ -54,7 +54,7 @@ console.log(props.images[0].url)
             <div class="flex flex-row gap-1 items-center self-start">
               <p class="text-xs line-through text-[#716969] lg:text-lg">{{ price }} ₽</p>
               <p
-                class="-text--red text-[10px] font-semibold lg:text-sm lg:-bg--yellow_dark lg:text-white lg:rounded-lg lg:font-medium"
+                class="-text--red text-[10px] font-semibold lg:text-sm lg:-bg--yellow_dark lg:text-white lg:rounded-lg lg:font-normal lg:px-2 lg:py-1"
               >
                 -18%
               </p>

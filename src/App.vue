@@ -58,4 +58,6 @@ provide('cart', {
   </div>
 </template>
 
-<style scoped></style>
+<style lang="less">
+@import '@/assets/styles/main.less';
+</style>

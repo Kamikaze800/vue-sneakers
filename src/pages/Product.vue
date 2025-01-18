@@ -69,9 +69,10 @@ onMounted(fetchItem)
       <div class="hidden sm:grid grid-cols-2">
         <div class="" v-for="image in item?.images || []" :key="image.id">
           <!-- изображения в фул  -->
-          <img class="" :src="image.url" :alt="`Slide ${image.id}`" />
+          <img class="" :src="image.url" :alt="`Slide ${image.id}`" @click="console.log()" />
         </div>
       </div>
+      <div class="fixed bg-slate-500"></div>
       <div class="px-4 flex flex-col">
         <!-- основной текст -->
         <h1 class="text-xl">{{ title }}</h1>
