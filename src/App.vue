@@ -5,6 +5,12 @@ import Header from './components/Header.vue'
 import Home from './pages/Home.vue'
 import Drawer from './components/Drawer.vue'
 
+const darkTheme = ref(false)
+
+const toggleTheme = () => {
+  darkTheme.value = !darkTheme.value
+}
+provide('darkTheme', { darkTheme, toggleTheme })
 /* Корзина (start) */
 
 const cart = ref([])
@@ -48,7 +54,7 @@ provide('cart', {
 </script>
 
 <template>
-  <div class="container bg-white sm:mt-5 m-auto rounded-xl shadow-xl">
+  <div class="container bg-white bg-black sm:mt-5 m-auto rounded-xl shadow-xl">
     <Header :total-price="totalPrice" @open-drawer="openDrawer" />
 
     <div class="p-1">
@@ -58,6 +64,4 @@ provide('cart', {
   </div>
 </template>
 
-<style lang="less">
-@import '@/assets/styles/main.less';
-</style>
+<style></style>

@@ -7,12 +7,20 @@ const props = defineProps({
   price: Number,
   amount: Number,
   description: String,
+  tag: String,
   isFavorite: Boolean,
   isAdded: Boolean,
   onClickAdd: Function,
   onClickFavorite: Function,
 })
-console.log(props.images[0].url)
+// console.log(props.images[0].url)
+const tag = props.tag
+console.log(tag)
+const colorMap = {
+  'Лучшая цена': 'bg-green-400',
+  'Хит сезона': 'bg-[#F15D5D]',
+  'Топ продаж': 'bg-blue-400',
+}
 </script>
 
 <template>
@@ -22,8 +30,11 @@ console.log(props.images[0].url)
     >
       <div class="absolute w-10/12">
         <div class="flex justify-between">
-          <div class="bg-green-400 text-white rounded-xl text-xs px-3 py-1 lg:text-base">
-            Лучшая цена
+          <div
+            class="text-white rounded-xl text-xs px-3 py-1 lg:text-base"
+            :class="colorMap[props.tag]"
+          >
+            {{ props.tag }}
           </div>
           <div class="flex items-center gap-2">
             <img
@@ -68,3 +79,8 @@ console.log(props.images[0].url)
     </button>
   </div>
 </template>
+
+<style scoped>
+.best_price {
+}
+</style>

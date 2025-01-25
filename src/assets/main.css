@@ -2,5 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@import './fonts.less';
-@import './reset.less';
+body {
+  background: black;
+}

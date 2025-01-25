@@ -15,6 +15,8 @@ import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import 'swiper/css/scrollbar'
 
+import Gallery from '@/components/Gallery.vue'
+
 const modules = [Navigation, Pagination, Scrollbar, A11y]
 
 const onSwiper = (swiper) => {
@@ -32,17 +34,18 @@ const title = ref()
 const fetchItem = async () => {
   try {
     const { data } = await axios.get('https://8fb2ce8dc0a90345.mokky.dev/items', { params: { id } })
-    console.log(data)
+    // console.log(data)
     item.value = data[0]
     title.value = item.value.title
-    console.log(item.value.images[0].url)
+    // console.log(item.value.images[0].url)
   } catch (e) {
     console.log(e)
   }
 }
 
 const sale = ref(false)
-
+const openGallery = ref(false)
+// console.log(openGallery.value)
 onMounted(fetchItem)
 </script>
 
@@ -60,11 +63,17 @@ onMounted(fetchItem)
         <!-- Динамическое создание слайдов из item.images -->
         <swiper-slide v-for="image in item?.images || []" :key="image.id">
           <div class="flex place-content-center">
-            <img class="" :src="image.url" :alt="`Slide ${image.id}`" />
+            <img
+              @click="() => (openGalley = !openGalley)"
+              class=""
+              :src="image.url"
+              :alt="`Slide ${image.id}`"
+            />
           </div>
         </swiper-slide>
       </swiper>
     </div>
+    <Gallery v-show="openGallery.value"></Gallery>
     <div class="flex place-content-center">
       <div class="hidden sm:grid grid-cols-2">
         <div class="" v-for="image in item?.images || []" :key="image.id">
