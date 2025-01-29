@@ -5,12 +5,18 @@ import Header from './components/Header.vue'
 import Home from './pages/Home.vue'
 import Drawer from './components/Drawer.vue'
 
-const darkTheme = ref(false)
+const darkTheme = ref(localStorage.getItem('darkTheme') === 'true' || false)
 
 const toggleTheme = () => {
   darkTheme.value = !darkTheme.value
+
+  document.body.classList.toggle('darkTheme', darkTheme.value)
 }
 provide('darkTheme', { darkTheme, toggleTheme })
+
+watch(darkTheme, (newValue) => {
+  localStorage.setItem('darkTheme', newValue)
+})
 /* Корзина (start) */
 
 const cart = ref([])
@@ -51,6 +57,12 @@ provide('cart', {
 })
 
 /* Корзина (end) */
+
+onMounted(() => {
+  if (darkTheme.value) {
+    document.body.classList.add('darkTheme')
+  }
+})
 </script>
 
 <template>

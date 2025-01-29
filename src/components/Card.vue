@@ -15,7 +15,7 @@ const props = defineProps({
 })
 // console.log(props.images[0].url)
 const tag = props.tag
-console.log(tag)
+
 const colorMap = {
   'Лучшая цена': 'bg-green-400',
   'Хит сезона': 'bg-[#F15D5D]',

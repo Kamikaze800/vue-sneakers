@@ -9,6 +9,7 @@ export default {
         '--gray_white_white': '#EFEFEF',
         '--red': '#FF4F4F',
         '--yellow_dark': '#F1BF5D',
+        '--black-soft': '#242424',
       },
     },
   },
