@@ -11,6 +11,9 @@ export default {
         '--yellow_dark': '#F1BF5D',
         '--black-soft': '#242424',
       },
+      boxShadow: {
+        '--whiteShadow': '0 35px 60px -15px rgba(255,255,255,0.3)',
+      },
     },
   },
   plugins: [],

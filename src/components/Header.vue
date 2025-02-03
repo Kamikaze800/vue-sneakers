@@ -97,18 +97,18 @@ const { darkTheme, toggleTheme } = inject('darkTheme')
     <ul class="hidden sm:flex sm:items-center sm:gap-5">
       <li
         @click="() => emit('openDrawer')"
-        class="flex items-center gap-3 text-gray-400 hover:text-black cursor-pointer"
+        class="flex items-center gap-2 text-gray-400 hover:text-black cursor-pointer"
       >
         <img src="/cart.svg" alt="" />
         <b>{{ totalPrice }} руб</b>
       </li>
       <RouterLink to="/favorites">
-        <li class="flex items-center gap-3 text-gray-400 hover:text-black cursor-pointer">
+        <li class="flex items-center gap-2 text-gray-400 hover:text-black cursor-pointer">
           <img src="/heart.svg" alt="" />
           <span>Закладки</span>
         </li>
       </RouterLink>
-      <li class="flex items-center gap-3 text-gray-400 hover:text-black cursor-pointer">
+      <li class="flex items-center gap-2 text-gray-400 hover:text-black cursor-pointer">
         <img src="/profile.svg" alt="" />
         <span>Профиль</span>
       </li>

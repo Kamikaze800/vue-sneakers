@@ -111,7 +111,7 @@ watch(filters, fetchItems)
 
 <template>
   <div class="flex flex-col sm:flex-row justify-between items-center mx-12 lg:mx-28 mt-5">
-    <h2 class="text-3xl font-bold mb-5 md:mb-0">Все кроссовки</h2>
+    <h2 class="text-3xl leading-8 font-bold mb-5 md:mb-0">Все кроссовки</h2>
 
     <div class="flex flex-col md:flex-row gap-5">
       <select @change="onChangeSelect" class="py-2 px-3 border rounded-md outline-none">

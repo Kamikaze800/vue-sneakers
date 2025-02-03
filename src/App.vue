@@ -66,10 +66,13 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="container bg-white bg-black sm:mt-5 m-auto rounded-xl shadow-xl">
+  <div
+    class="container bg-white sm:mt-5 m-auto rounded-xl shadow"
+    :class="{ '-shadow--whiteShadow': darkTheme }"
+  >
     <Header :total-price="totalPrice" @open-drawer="openDrawer" />
 
-    <div class="p-1">
+    <div class="">
       <Drawer :vat-price="vatPrice" :total-price="totalPrice" v-if="drawerOpen" />
       <RouterView />
     </div>
