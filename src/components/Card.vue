@@ -24,10 +24,8 @@ const colorMap = {
 </script>
 
 <template>
-  <div class="cursor-pointer hover:-translate-y-2 transition">
-    <div
-      class="relative w-40 lg:w-80 p-2 lg:p-4 border hover:shadow-xl border-slate-100 rounded-3xl"
-    >
+  <div class="cursor-pointer hover:scale-110 transition-transform duration-300">
+    <div class="relative w-40 lg:w-auto p-2 border hover:shadow-xl border-slate-100 rounded-3xl">
       <div class="absolute w-10/12">
         <div class="flex justify-between">
           <div
@@ -56,7 +54,7 @@ const colorMap = {
       </div>
 
       <RouterLink :to="{ name: 'Product', params: { id } }">
-        <div class="aspect-square max-h-64">
+        <div class="">
           <img :src="images[0].url" class="rounded-xl" alt="" />
         </div>
         <p class="line-clamp-2 text-sm lg:text-xl">{{ title }}</p>
