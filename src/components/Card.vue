@@ -24,12 +24,14 @@ const colorMap = {
 </script>
 
 <template>
-  <div class="cursor-pointer hover:scale-110 transition-transform duration-300">
-    <div class="relative w-40 lg:w-auto p-2 border hover:shadow-xl border-slate-100 rounded-3xl">
-      <div class="absolute w-10/12">
+  <div class="cursor-pointer transition-transform duration-300 hover:scale-110">
+    <div
+      class="relative w-40 rounded-3xl border border-t-0 border-slate-100 hover:shadow-xl lg:w-auto lg:rounded-xl dark:border-white dark:-bg--dark"
+    >
+      <div class="absolute w-full p-2">
         <div class="flex justify-between">
           <div
-            class="text-white rounded-xl text-xs px-3 py-1 lg:text-base"
+            class="rounded-xl px-3 py-1 text-xs text-white lg:text-base"
             :class="colorMap[props.tag]"
           >
             {{ props.tag }}
@@ -42,7 +44,7 @@ const colorMap = {
               class="w-5 lg:w-7"
             />
             <img
-              class="hidden lg:block w-7"
+              class="hidden w-7 lg:block"
               @click="onClickAdd"
               :src="!isAdded ? '/bug_1.svg' : '/bug_2.svg'"
               alt=""
@@ -55,27 +57,32 @@ const colorMap = {
 
       <RouterLink :to="{ name: 'Product', params: { id } }">
         <div class="">
-          <img :src="images[0].url" class="rounded-xl" alt="" />
+          <img
+            :src="images[0].url"
+            class="rounded-3xl rounded-b-none lg:rounded-xl lg:rounded-b-none"
+            alt=""
+          />
         </div>
-        <p class="line-clamp-2 text-sm lg:text-xl">{{ title }}</p>
-        <div class="flex justify-between">
-          <div class="flex flex-row gap-2">
-            <span class="font-bold text-sm lg:font-semibold lg:text-2xl">{{ price }} ₽</span>
-
-            <div class="flex flex-row gap-1 items-center self-start">
-              <p class="text-xs line-through text-[#716969] lg:text-lg">{{ price }} ₽</p>
-              <p
-                class="-text--red text-[10px] font-semibold lg:text-sm lg:-bg--yellow_dark lg:text-white lg:rounded-lg lg:font-normal lg:px-2 lg:py-1"
-              >
-                -18%
-              </p>
+        <div class="">
+          <p class="line-clamp-2 text-sm lg:text-xl">{{ title }}</p>
+          <div class="flex justify-between">
+            <div class="flex flex-row gap-2">
+              <span class="text-sm font-bold lg:text-2xl lg:font-semibold">{{ price }} ₽</span>
+              <div class="flex flex-row items-center gap-1 self-start">
+                <p class="text-xs text-[#716969] line-through lg:text-lg">{{ price }} ₽</p>
+                <p
+                  class="text-[10px] font-semibold -text--red lg:rounded-lg lg:-bg--yellow_dark lg:px-2 lg:py-1 lg:text-sm lg:font-normal lg:text-white"
+                >
+                  -18%
+                </p>
+              </div>
             </div>
           </div>
         </div>
       </RouterLink>
     </div>
     <button
-      class="z-10 py-2 px-4 -bg--dark rounded-lg text-white text-xs hover:shadow-xl lg:hidden"
+      class="z-10 rounded-lg -bg--dark px-4 py-2 text-xs text-white hover:shadow-xl lg:hidden"
     >
       В корзину
     </button>

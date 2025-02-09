@@ -13,6 +13,7 @@ export default {
         '--black-soft': '#242424',
         '--black': '#1a1a1a',
         '--green': '#42b883',
+        '--vt-c-text-dark-1': 'rgba(255, 255, 255, .87)',
       },
       boxShadow: {
         '--whiteShadow': '0 35px 60px -15px rgba(255,255,255,0.3)',

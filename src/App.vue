@@ -10,12 +10,17 @@ const darkTheme = ref(localStorage.getItem('darkTheme') === 'true' || false)
 const toggleTheme = () => {
   darkTheme.value = !darkTheme.value
 
-  document.body.classList.toggle('darkTheme', darkTheme.value)
+  document.body.classList.toggle('dark', darkTheme.value)
 }
 provide('darkTheme', { darkTheme, toggleTheme })
 
 watch(darkTheme, (newValue) => {
   localStorage.setItem('darkTheme', newValue)
+})
+onMounted(() => {
+  if (darkTheme.value) {
+    document.body.classList.add('dark')
+  }
 })
 /* Корзина (start) */
 
@@ -57,17 +62,11 @@ provide('cart', {
 })
 
 /* Корзина (end) */
-
-onMounted(() => {
-  if (darkTheme.value) {
-    document.body.classList.add('darkTheme')
-  }
-})
 </script>
 
 <template>
   <div
-    class="container bg-white dark:-bg--black sm:mt-5 m-auto rounded-xl shadow"
+    class="container bg-white dark:-bg--black sm:mt-5 m-auto rounded-xl shadow dark:-text--vt-c-text-dark-1"
     :class="{ '-shadow--whiteShadow': darkTheme }"
   >
     <Header :total-price="totalPrice" @open-drawer="openDrawer" />
