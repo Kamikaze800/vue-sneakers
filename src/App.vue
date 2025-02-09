@@ -67,7 +67,7 @@ onMounted(() => {
 
 <template>
   <div
-    class="container bg-white sm:mt-5 m-auto rounded-xl shadow"
+    class="container bg-white dark:-bg--black sm:mt-5 m-auto rounded-xl shadow"
     :class="{ '-shadow--whiteShadow': darkTheme }"
   >
     <Header :total-price="totalPrice" @open-drawer="openDrawer" />
