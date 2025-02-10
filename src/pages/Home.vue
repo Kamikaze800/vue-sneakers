@@ -110,13 +110,13 @@ watch(filters, fetchItems)
 </script>
 
 <template>
-  <div class="flex flex-col sm:flex-row justify-between items-center mx-12 lg:mx-28 mt-5">
-    <h2 class="text-3xl leading-8 font-bold mb-5 md:mb-0">Все кроссовки</h2>
+  <div class="mx-12 mt-5 flex flex-col items-center justify-between sm:flex-row lg:mx-28">
+    <h2 class="mb-5 text-3xl font-bold leading-8 md:mb-0">Все кроссовки</h2>
 
-    <div class="flex flex-col md:flex-row gap-5">
+    <div class="flex flex-col gap-5 md:flex-row">
       <select
         @change="onChangeSelect"
-        class="py-2 px-3 border rounded-md outline-none dark:-bg--dark"
+        class="rounded-md border px-3 py-2 outline-none dark:-bg--dark"
       >
         <option value="title">По названию</option>
         <option value="price">По цене (дешевые)</option>
@@ -126,14 +126,14 @@ watch(filters, fetchItems)
         <img class="absolute left-4 top-3" src="/search.svg" alt="" />
         <input
           @input="onChangeSearchInput"
-          class="border rounded-md py-2 pl-12 pr-4 outline-none focus:border-gray-400 dark:-bg--dark"
+          class="rounded-md border py-2 pl-12 pr-4 outline-none focus:border-gray-400 dark:-bg--dark"
           placeholder="Поиск..."
         />
       </div>
     </div>
   </div>
 
-  <div class="mt-10">
+  <div class="mt-5">
     <CardList :items="items" @add-to-favorite="addToFavorite" @add-to-cart-plus="addToCartPlus" />
   </div>
 </template>

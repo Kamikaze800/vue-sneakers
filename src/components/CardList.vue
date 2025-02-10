@@ -8,7 +8,7 @@ const emit = defineEmits(['addToFavorite', 'addToCartPlus'])
 </script>
 <template>
   <div
-    class="flex flex-wrap gap-y-8 gap-x-4 lg:gap-4 place-content-center rounded-lg"
+    class="flex flex-wrap place-content-center gap-x-4 gap-y-8 rounded-lg -bg--gray_white_white pt-5 lg:gap-4 dark:bg-transparent"
     v-auto-animate
   >
     <Card

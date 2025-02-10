@@ -24,9 +24,9 @@ const colorMap = {
 </script>
 
 <template>
-  <div class="cursor-pointer transition-transform duration-300 hover:scale-110">
+  <div class="cursor-pointer transition-transform">
     <div
-      class="relative w-40 rounded-3xl border border-t-0 border-slate-100 hover:shadow-xl lg:w-auto lg:rounded-xl dark:border-white dark:-bg--dark"
+      class="relative w-40 rounded-xl border-t-0 border-slate-100 hover:shadow-xl lg:w-auto lg:rounded-xl dark:border-0 dark:-bg--dark"
     >
       <div class="absolute w-full p-2">
         <div class="flex justify-between">
@@ -57,13 +57,9 @@ const colorMap = {
 
       <RouterLink :to="{ name: 'Product', params: { id } }">
         <div class="">
-          <img
-            :src="images[0].url"
-            class="rounded-3xl rounded-b-none lg:rounded-xl lg:rounded-b-none"
-            alt=""
-          />
+          <img :src="images[0].url" class="rounded-xl border" alt="" />
         </div>
-        <div class="">
+        <div class="p-2">
           <p class="line-clamp-2 text-sm lg:text-xl">{{ title }}</p>
           <div class="flex justify-between">
             <div class="flex flex-row gap-2">
@@ -80,16 +76,15 @@ const colorMap = {
           </div>
         </div>
       </RouterLink>
+      <div class="">
+        <button
+          class="z-10 mb-2 ml-2 rounded -bg--black-soft px-4 py-2 text-xs text-white hover:shadow-xl lg:hidden"
+        >
+          В корзину
+        </button>
+      </div>
     </div>
-    <button
-      class="z-10 rounded-lg -bg--dark px-4 py-2 text-xs text-white hover:shadow-xl lg:hidden"
-    >
-      В корзину
-    </button>
   </div>
 </template>
 
-<style scoped>
-.best_price {
-}
-</style>
+<style scoped></style>

@@ -37,8 +37,8 @@ const cartIsEmpty = computed(() => cart.value.length === 0)
 const buttonDisabled = computed(() => isCreating.value || cartIsEmpty.value)
 </script>
 <template>
-  <div @click="closeDrawer" class="fixed top-0 left-0 h-full w-full bg-black z-10 opacity-70"></div>
-  <div class="bg-white w-96 h-full fixed right-0 top-0 z-20 p-8">
+  <div @click="closeDrawer" class="fixed left-0 top-0 z-10 h-full w-full bg-black opacity-70"></div>
+  <div class="fixed right-0 top-0 z-20 h-full w-96 bg-white p-8 dark:-bg--dark">
     <DrawerHead />
 
     <div class="flex h-full items-center" v-if="!totalPrice || orderId">
@@ -58,7 +58,7 @@ const buttonDisabled = computed(() => isCreating.value || cartIsEmpty.value)
 
     <CartItemList />
 
-    <div v-if="totalPrice" class="flex flex-col gap-4 mb-5 my-7">
+    <div v-if="totalPrice" class="my-7 mb-5 flex flex-col gap-4">
       <div class="flex gap-2">
         <span>Итого:</span>
         <div class="flex-1 border-b border-dashed"></div>
@@ -73,7 +73,7 @@ const buttonDisabled = computed(() => isCreating.value || cartIsEmpty.value)
       <button
         :disabled="buttonDisabled"
         @click="createOrder"
-        class="mt-4 bg-lime-500 w-full rounded-xl py-3 text-white hover:bg-lime-600 transition active:bg-lime-700 disabled:bg-slate-300 cursor-pointer"
+        class="mt-4 w-full cursor-pointer rounded-xl bg-lime-500 py-3 text-white transition hover:bg-lime-600 active:bg-lime-700 disabled:bg-slate-300"
       >
         Оформить закакз
       </button>

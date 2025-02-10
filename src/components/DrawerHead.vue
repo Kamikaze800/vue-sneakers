@@ -1,17 +1,29 @@
 <script setup>
-import { inject } from 'vue';
-const { closeDrawer } = inject('cart');
+import { inject } from 'vue'
+const { closeDrawer } = inject('cart')
 </script>
 
 <template>
-  <div class="flex items-center gap-5 mb-5">
-    <svg @click="closeDrawer"
-      class="cursor-pointer opacity-30 rotate-180 hover:opacity-100 transition hover:-translate-x-1" width="16"
-      height="14" viewBox="0 0 16 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M1 7H14.7143" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-      <path d="M8.71436 1L14.7144 7L8.71436 13" stroke="black" stroke-width="2" stroke-linecap="round"
-        stroke-linejoin="round" />
-    </svg>
+  <div class="mb-5 flex items-center gap-5 dark:fill-white">
+    <div
+      @click="closeDrawer"
+      class="cursor-pointer opacity-30 transition hover:-translate-x-1 hover:opacity-100"
+    >
+      <svg
+        width="24"
+        clip-rule="evenodd"
+        fill-rule="evenodd"
+        stroke-linejoin="round"
+        stroke-miterlimit="2"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="m9.474 5.209s-4.501 4.505-6.254 6.259c-.147.146-.22.338-.22.53s.073.384.22.53c1.752 1.754 6.252 6.257 6.252 6.257.145.145.336.217.527.217.191-.001.383-.074.53-.221.293-.293.294-.766.004-1.057l-4.976-4.976h14.692c.414 0 .75-.336.75-.75s-.336-.75-.75-.75h-14.692l4.978-4.979c.289-.289.287-.761-.006-1.054-.147-.147-.339-.221-.53-.221-.191-.001-.38.071-.525.215z"
+          fill-rule="nonzero"
+        />
+      </svg>
+    </div>
     <h2 class="text-2xl font-bold">Корзина</h2>
   </div>
 </template>
