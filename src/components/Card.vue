@@ -79,8 +79,11 @@ const colorMap = {
       <div class="">
         <button
           class="z-10 mb-2 ml-2 rounded -bg--black-soft px-4 py-2 text-xs text-white hover:shadow-xl lg:hidden"
+          @click="onClickAdd"
+          :class="{ '-bg--green': isAdded }"
         >
-          В корзину
+          <p v-if="isAdded">В корзине</p>
+          <p v-else>В корзину</p>
         </button>
       </div>
     </div>

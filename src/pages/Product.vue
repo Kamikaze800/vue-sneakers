@@ -44,7 +44,10 @@ const fetchItem = async () => {
 }
 
 const sale = ref(false)
-const openGallery = ref(false)
+const galleryOpen = ref(false)
+const openGallery = () => {
+  galleryOpen.value = true
+}
 // console.log(openGallery.value)
 onMounted(fetchItem)
 </script>
@@ -73,48 +76,48 @@ onMounted(fetchItem)
         </swiper-slide>
       </swiper>
     </div>
-    <Gallery v-show="openGallery.value"></Gallery>
+    <Gallery v-show="galleryOpen.value"></Gallery>
     <div class="flex place-content-center">
-      <div class="hidden sm:grid grid-cols-2">
+      <div class="hidden grid-cols-2 sm:grid">
         <div class="" v-for="image in item?.images || []" :key="image.id">
           <!-- изображения в фул  -->
           <img class="" :src="image.url" :alt="`Slide ${image.id}`" @click="console.log()" />
         </div>
       </div>
       <div class="fixed bg-slate-500"></div>
-      <div class="px-4 flex flex-col">
+      <div class="flex flex-col px-4">
         <!-- основной текст -->
         <h1 class="text-xl">{{ title }}</h1>
         <div class="flex justify-between">
           <div class="flex flex-row gap-2">
-            <p class="text-red-500 text-2xl font-bold">{{ item?.price }} ₽</p>
-            <p class="text-sm line-through text-[#716969]">{{ item?.price }} ₽</p>
+            <p class="text-2xl font-bold text-red-500">{{ item?.price }} ₽</p>
+            <p class="text-sm text-[#716969] line-through">{{ item?.price }} ₽</p>
           </div>
           <img src="/heart.svg" class="object-fill" alt="" />
         </div>
         <p>{{ item?.description }}</p>
         <div class="mb-2">
           <p class="pb-2">Размер</p>
-          <ul class="flex gap-3 flex-wrap">
+          <ul class="flex flex-wrap gap-3">
             <li
-              class="-bg--gray_white px-2 py-1 rounded-md hover:-bg--dark hover:text-white cursor-pointer active:-bg--dark"
+              class="cursor-pointer rounded-md -bg--gray_white px-2 py-1 hover:-bg--dark hover:text-white active:-bg--dark"
             >
               44
             </li>
-            <li class="-bg--gray_white px-2 py-1 rounded-md">44</li>
+            <li class="rounded-md -bg--gray_white px-2 py-1">44</li>
           </ul>
         </div>
         <div class="mb-2">
           <p class="pb-2">Цвет</p>
           <ul class="flex gap-3">
-            <li class="bg-orange-600 size-7 rounded-md"></li>
-            <li class="bg-orange-600 size-7 rounded-md"></li>
+            <li class="size-7 rounded-md bg-orange-600"></li>
+            <li class="size-7 rounded-md bg-orange-600"></li>
           </ul>
         </div>
-        <button class="text-sm text-white bg-[#464646] py-3 px-9 rounded-md">
+        <button class="rounded-md bg-[#464646] px-9 py-3 text-sm text-white">
           ДОБАВИТЬ В КОРЗИНУ {{ item?.price }} ₽
         </button>
-        <button class="underline shrink">Купить в 1 клик</button>
+        <button class="shrink underline">Купить в 1 клик</button>
         <div>
           <p class="text-lg font-medium">О товаре</p>
           <ul>
