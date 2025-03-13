@@ -1,21 +1,21 @@
 <script setup>
-import { onMounted, ref } from 'vue'
-import axios from 'axios'
-import { useRoute } from 'vue-router'
+import { onMounted, ref, reactive } from "vue"
+import axios from "axios"
+import { useRoute } from "vue-router"
 
 // Import Swiper core and required modules
-import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules'
+import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules"
 
 // Import Swiper Vue.js components
-import { Swiper, SwiperSlide } from 'swiper/vue'
+import { Swiper, SwiperSlide } from "swiper/vue"
 
 // Import Swiper styles
-import 'swiper/css'
-import 'swiper/css/navigation'
-import 'swiper/css/pagination'
-import 'swiper/css/scrollbar'
+import "swiper/css"
+import "swiper/css/navigation"
+import "swiper/css/pagination"
+import "swiper/css/scrollbar"
 
-import Gallery from '@/components/Gallery.vue'
+import Gallery from "@/components/Gallery.vue"
 
 const modules = [Navigation, Pagination, Scrollbar, A11y]
 
@@ -24,24 +24,28 @@ const onSwiper = (swiper) => {
 }
 
 const onSlideChange = () => {
-  console.log('slide change')
+  console.log("slide change")
 }
 
 const route = useRoute()
 const { id } = route.params
-const item = ref()
-const title = ref()
+const item = reactive({})
+
 const fetchItem = async () => {
   try {
-    const { data } = await axios.get('https://8fb2ce8dc0a90345.mokky.dev/items', { params: { id } })
-    // console.log(data)
-    item.value = data[0]
-    title.value = item.value.title
+    const { data } = await axios.get("https://8fb2ce8dc0a90345.mokky.dev/items", { params: { id } })
+    Object.assign(item, data[0]) // создаёт объект клчами, которого являются ключи data[0]
+    // console.log(item.price)
+    // item.value = data[0]
+    // title.value = item.value.title
     // console.log(item.value.images[0].url)
   } catch (e) {
     console.log(e)
   }
 }
+
+const selectedSize = ref(null)
+const selectedColor = ref(null)
 
 const sale = ref(false)
 const galleryOpen = ref(false)
@@ -87,31 +91,57 @@ onMounted(fetchItem)
       <div class="fixed bg-slate-500"></div>
       <div class="flex flex-col px-4">
         <!-- основной текст -->
-        <h1 class="text-xl">{{ title }}</h1>
+        <h1 class="text-xl">{{ item?.title }}</h1>
         <div class="flex justify-between">
           <div class="flex flex-row gap-2">
             <p class="text-2xl font-bold text-red-500">{{ item?.price }} ₽</p>
             <p class="text-sm text-[#716969] line-through">{{ item?.price }} ₽</p>
           </div>
-          <img src="/heart.svg" class="object-fill" alt="" />
+          <div class="flex gap-6">
+            <img src="/share.svg" class="" alt="" />
+            <img src="/heart.png" class="" alt="" />
+          </div>
         </div>
         <p>{{ item?.description }}</p>
         <div class="mb-2">
           <p class="pb-2">Размер</p>
           <ul class="flex flex-wrap gap-3">
+            <!--мне надо выделять конкретный элемент li, при нажатии не него
+            у меня есть key, который
+            может ис-->
             <li
-              class="cursor-pointer rounded-md -bg--gray_white px-2 py-1 hover:-bg--dark hover:text-white active:-bg--dark"
+              v-for="size in item.sizes"
+              :key="size"
+              class="cursor-pointer rounded-md px-2 py-1"
+              :class="{
+                '-bg--dark text-white': selectedSize === size, // Выбранный размер (активный)
+                '-bg--gray_white': selectedSize !== size, // Не выбранный размер (стандартный)
+                'hover:-bg--dark hover:text-white': selectedSize !== size, // Наведение
+              }"
+              @click="selectedSize = size"
             >
-              44
+              {{ size }}
             </li>
-            <li class="rounded-md -bg--gray_white px-2 py-1">44</li>
           </ul>
         </div>
         <div class="mb-2">
           <p class="pb-2">Цвет</p>
           <ul class="flex gap-3">
-            <li class="size-7 rounded-md bg-orange-600"></li>
-            <li class="size-7 rounded-md bg-orange-600"></li>
+            <li
+              v-for="color in item.colors"
+              :key="color"
+              class="size-7 cursor-pointer rounded-md"
+              :style="{ backgroundColor: color }"
+              :class="{
+                'outline outline-2 outline-offset-2': selectedColor === color, // Выбранный размер (активный)
+              }"
+              @click="
+                () => {
+                  selectedColor = color
+                  console.log(selectedColor)
+                }
+              "
+            ></li>
           </ul>
         </div>
         <button class="rounded-md bg-[#464646] px-9 py-3 text-sm text-white">

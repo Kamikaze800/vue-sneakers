@@ -41,6 +41,7 @@ const addToCart = (item) => {
   cart.value.push(item)
   item.isAdded = true
 }
+
 const removeFromCart = (item) => {
   cart.value.splice(cart.value.indexOf(item), 1)
   item.isAdded = false
@@ -66,7 +67,7 @@ provide('cart', {
 
 <template>
   <div
-    class="container bg-white dark:-bg--black sm:mt-5 m-auto rounded-xl shadow dark:-text--vt-c-text-dark-1"
+    class="container m-auto rounded-xl bg-white shadow sm:mt-5 dark:-bg--black dark:-text--vt-c-text-dark-1"
     :class="{ '-shadow--whiteShadow': darkTheme }"
   >
     <Header :total-price="totalPrice" @open-drawer="openDrawer" />
