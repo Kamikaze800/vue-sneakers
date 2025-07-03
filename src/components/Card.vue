@@ -17,9 +17,9 @@ const props = defineProps({
 const tag = props.tag
 
 const colorMap = {
-  'Лучшая цена': 'bg-green-400',
-  'Хит сезона': 'bg-[#F15D5D]',
-  'Топ продаж': 'bg-blue-400',
+  "Лучшая цена": "bg-green-400",
+  "Хит сезона": "bg-[#F15D5D]",
+  "Топ продаж": "bg-blue-400",
 }
 </script>
 
@@ -55,27 +55,38 @@ const colorMap = {
         </div>
       </div>
 
-      <RouterLink :to="{ name: 'Product', params: { id } }">
-        <div class="">
-          <img :src="images[0].url" class="rounded-xl border" alt="" />
-        </div>
-        <div class="p-2">
-          <p class="line-clamp-2 text-sm lg:text-xl">{{ title }}</p>
-          <div class="flex justify-between">
-            <div class="flex flex-row gap-2">
-              <span class="text-sm font-bold lg:text-2xl lg:font-semibold">{{ price }} ₽</span>
-              <div class="flex flex-row items-center gap-1 self-start">
-                <p class="text-xs text-[#716969] line-through lg:text-lg">{{ price }} ₽</p>
-                <p
-                  class="text-[10px] font-semibold -text--red lg:rounded-lg lg:-bg--yellow_dark lg:px-2 lg:py-1 lg:text-sm lg:font-normal lg:text-white"
-                >
-                  -18%
-                </p>
-              </div>
+      <div class="">
+        <!-- <img :src="images[0].url" class="rounded-xl border" alt="" /> -->
+        <swiper-container
+          slides-per-view="3"
+          speed="500"
+          loop="true"
+          css-mode="true"
+          v-for="image in item?.images || []"
+          :key="image.id"
+        >
+          <swiper-slide><img :src="image.url" alt="" /></swiper-slide>
+        </swiper-container>
+      </div>
+      <div class="p-2">
+        <RouterLink :to="{ name: 'Product', params: { id } }"
+          ><p class="line-clamp-2 text-sm lg:text-xl">{{ title }}</p></RouterLink
+        >
+        <div class="flex justify-between">
+          <div class="flex flex-row gap-2">
+            <span class="text-sm font-bold lg:text-2xl lg:font-semibold">{{ price }} ₽</span>
+            <div class="flex flex-row items-center gap-1 self-start">
+              <p class="text-xs text-[#716969] line-through lg:text-lg">{{ price }} ₽</p>
+              <p
+                class="text-[10px] font-semibold -text--red lg:rounded-lg lg:-bg--yellow_dark lg:px-2 lg:py-1 lg:text-sm lg:font-normal lg:text-white"
+              >
+                -18%
+              </p>
             </div>
           </div>
         </div>
-      </RouterLink>
+      </div>
+
       <div class="">
         <button
           class="z-10 mb-2 ml-2 rounded -bg--black-soft px-4 py-2 text-xs text-white hover:shadow-xl lg:hidden"

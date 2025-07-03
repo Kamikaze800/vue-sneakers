@@ -34,7 +34,7 @@ const item = reactive({})
 const fetchItem = async () => {
   try {
     const { data } = await axios.get("https://8fb2ce8dc0a90345.mokky.dev/items", { params: { id } })
-    Object.assign(item, data[0]) // создаёт объект клчами, которого являются ключи data[0]
+    Object.assign(item, data[0]) // создаёт объект, клчами которого являются ключи data[0]
     // console.log(item.price)
     // item.value = data[0]
     // title.value = item.value.title

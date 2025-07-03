@@ -1,10 +1,11 @@
 <script setup>
-import Card from './Card.vue'
+import Card from "./Card.vue"
+
 const props = defineProps({
   items: Array,
   isFavorites: Boolean,
 })
-const emit = defineEmits(['addToFavorite', 'addToCartPlus'])
+const emit = defineEmits(["addToFavorite", "addToCartPlus"])
 </script>
 <template>
   <div
