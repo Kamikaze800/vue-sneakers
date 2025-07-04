@@ -26,9 +26,9 @@ const colorMap = {
 <template>
   <div class="cursor-pointer transition-transform">
     <div
-      class="relative w-40 rounded-xl border-t-0 border-slate-100 hover:shadow-xl lg:w-auto lg:rounded-xl dark:border-0 dark:-bg--dark"
+      class="relative rounded-xl border-t-0 border-slate-100 hover:shadow-xl lg:w-auto lg:rounded-xl dark:border-0 dark:-bg--dark"
     >
-      <div class="absolute w-full p-2">
+      <div class="absolute z-10 w-full p-2">
         <div class="flex justify-between">
           <div
             class="rounded-xl px-3 py-1 text-xs text-white lg:text-base"
@@ -58,14 +58,16 @@ const colorMap = {
       <div class="">
         <!-- <img :src="images[0].url" class="rounded-xl border" alt="" /> -->
         <swiper-container
-          slides-per-view="3"
-          speed="500"
+          slides-per-view="1"
           loop="true"
-          css-mode="true"
-          v-for="image in item?.images || []"
-          :key="image.id"
+          :pagination="{
+            clickable: true,
+          }"
+          class="max-w-[250px] rounded-xl"
         >
-          <swiper-slide class=""> {{ image.id }} </swiper-slide>
+          <swiper-slide class="" v-for="image in images" :key="image.id">
+            <img :src="image.url" class="rounded-xl border" alt="" />
+          </swiper-slide>
         </swiper-container>
       </div>
       <div class="p-2">
