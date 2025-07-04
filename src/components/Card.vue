@@ -65,7 +65,7 @@ const colorMap = {
           v-for="image in item?.images || []"
           :key="image.id"
         >
-          <swiper-slide><img :src="image.url" alt="" /></swiper-slide>
+          <swiper-slide class=""> {{ image.id }} </swiper-slide>
         </swiper-container>
       </div>
       <div class="p-2">
