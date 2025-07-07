@@ -3,21 +3,7 @@ import { onMounted, ref, reactive } from "vue"
 import axios from "axios"
 import { useRoute } from "vue-router"
 
-// Import Swiper core and required modules
-import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules"
-
-// Import Swiper Vue.js components
-import { Swiper, SwiperSlide } from "swiper/vue"
-
-// Import Swiper styles
-import "swiper/css"
-import "swiper/css/navigation"
-import "swiper/css/pagination"
-import "swiper/css/scrollbar"
-
 import Gallery from "@/components/Gallery.vue"
-
-const modules = [Navigation, Pagination, Scrollbar, A11y]
 
 const onSwiper = (swiper) => {
   console.log(swiper)
@@ -35,7 +21,7 @@ const fetchItem = async () => {
   try {
     const { data } = await axios.get("https://8fb2ce8dc0a90345.mokky.dev/items", { params: { id } })
     Object.assign(item, data[0]) // создаёт объект, клчами которого являются ключи data[0]
-    // console.log(item.price)
+    console.log(item.price)
     // item.value = data[0]
     // title.value = item.value.title
     // console.log(item.value.images[0].url)
@@ -59,26 +45,22 @@ onMounted(fetchItem)
 <template>
   <div class="">
     <div class="rounded-md sm:hidden">
-      <swiper
-        :modules="modules"
-        :slides-per-view="1"
-        :space-between="50"
-        navigation
-        :pagination="{ clickable: true }"
-        :scrollbar="{ draggable: true }"
+      <swiper-container
+        slides-per-view="1"
+        loop="true"
+        :pagination="{
+          clickable: true,
+        }"
+        class="bg-white"
       >
-        <!-- Динамическое создание слайдов из item.images -->
-        <swiper-slide v-for="image in item?.images || []" :key="image.id">
-          <div class="flex place-content-center">
-            <img
-              @click="() => (openGalley = !openGalley)"
-              class=""
-              :src="image.url"
-              :alt="`Slide ${image.id}`"
-            />
-          </div>
+        <swiper-slide class="" v-for="image in item.images" :key="image.id">
+          <img
+            :src="image.url"
+            class="h-[140px] w-[170px] rounded-xl object-contain lg:h-[210px] lg:w-[250px]"
+            alt=""
+          />
         </swiper-slide>
-      </swiper>
+      </swiper-container>
     </div>
     <Gallery v-show="galleryOpen.value"></Gallery>
     <div class="flex place-content-center">
