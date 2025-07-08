@@ -5,14 +5,6 @@ import { useRoute } from "vue-router"
 
 import Gallery from "@/components/Gallery.vue"
 
-const onSwiper = (swiper) => {
-  console.log(swiper)
-}
-
-const onSlideChange = () => {
-  console.log("slide change")
-}
-
 const route = useRoute()
 const { id } = route.params
 const item = reactive({})
@@ -21,7 +13,7 @@ const fetchItem = async () => {
   try {
     const { data } = await axios.get("https://8fb2ce8dc0a90345.mokky.dev/items", { params: { id } })
     Object.assign(item, data[0]) // создаёт объект, клчами которого являются ключи data[0]
-    console.log(item.price)
+    // console.log(item.price)
     // item.value = data[0]
     // title.value = item.value.title
     // console.log(item.value.images[0].url)
@@ -38,33 +30,54 @@ const galleryOpen = ref(false)
 const openGallery = () => {
   galleryOpen.value = true
 }
+
+// Обработчик прогресса слайдера
+// const onProgress = (e) => {
+//   const [swiper, progress] = e.detail
+//   console.log(progress)
+// }
+
+// Обработчик смены слайда
+const onSlideChange = (e) => {
+  console.log(e.detail[0].activeIndex)
+}
+
 // console.log(openGallery.value)
 onMounted(fetchItem)
 </script>
 
 <template>
-  <div class="">
-    <div class="rounded-md sm:hidden">
+  <div class="flex justify-center">
+    <div class="flex h-[450px]">
+      <!-- Миниатюры (левый вертикальный слайдер) -->
       <swiper-container
-        slides-per-view="1"
-        loop="true"
-        :pagination="{
-          clickable: true,
-        }"
-        class="bg-white"
+        class="hidden max-h-[300px] w-[100px] sm:block"
+        direction="vertical"
+        :slides-per-view="4"
+        navigation="false"
+        :mousewheel="{ forceToAxis: true }"
+        id="gallery-thumbs"
       >
-        <swiper-slide class="" v-for="image in item.images" :key="image.id">
-          <img
-            :src="image.url"
-            class="h-[140px] w-[170px] rounded-xl object-contain lg:h-[210px] lg:w-[250px]"
-            alt=""
-          />
+        <swiper-slide v-for="(image, index) in item.images" :key="index">
+          <img :src="image.url" :data-index="index" class="cursor-pointer object-cover" />
+        </swiper-slide>
+      </swiper-container>
+      <swiper-container
+        class="max-w-[500px] bg-white"
+        slides-per-view="1"
+        :centered-slides="true"
+        id="gallery-main"
+        thumbs-swiper="#gallery-thumbs"
+        pagination="true"
+      >
+        <swiper-slide class="" v-for="(image, index) in item.images" :key="index">
+          <img :src="image.url" class="m-auto h-[450px] max-w-[500px] object-contain" alt="" />
         </swiper-slide>
       </swiper-container>
     </div>
-    <Gallery v-show="galleryOpen.value"></Gallery>
+    <!-- <Gallery v-show="galleryOpen.value" class="absolute"></Gallery> -->
     <div class="flex place-content-center">
-      <div class="hidden grid-cols-2 sm:grid">
+      <div class="hidden grid-cols-2">
         <div class="" v-for="image in item?.images || []" :key="image.id">
           <!-- изображения в фул  -->
           <img class="" :src="image.url" :alt="`Slide ${image.id}`" @click="console.log()" />
@@ -81,7 +94,12 @@ onMounted(fetchItem)
           </div>
           <div class="flex gap-6">
             <img src="/share.svg" class="" alt="" />
-            <img src="/heart.png" class="" alt="" />
+            <img
+              :src="!item.isFavorite ? '/like_1.svg' : '/like_2.svg'"
+              @click="(e) => console.log(item)"
+              class=""
+              alt=""
+            />
           </div>
         </div>
         <p>{{ item?.description }}</p>
@@ -141,4 +159,10 @@ onMounted(fetchItem)
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+@media (min-width: 701px) {
+  swiper-container::part(pagination) {
+    display: none;
+  }
+}
+</style>
