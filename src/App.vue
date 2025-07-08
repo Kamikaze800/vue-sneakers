@@ -1,25 +1,26 @@
 <script setup>
-import { onMounted, ref, watch, reactive, provide, computed } from 'vue'
+import { onMounted, ref, watch, reactive, provide, computed } from "vue"
+import axios from "axios"
 
-import Header from './components/Header.vue'
-import Home from './pages/Home.vue'
-import Drawer from './components/Drawer.vue'
+import Header from "./components/Header.vue"
+import Home from "./pages/Home.vue"
+import Drawer from "./components/Drawer.vue"
 
-const darkTheme = ref(localStorage.getItem('darkTheme') === 'true' || false)
+const darkTheme = ref(localStorage.getItem("darkTheme") === "true" || false)
 
 const toggleTheme = () => {
   darkTheme.value = !darkTheme.value
 
-  document.body.classList.toggle('dark', darkTheme.value)
+  document.body.classList.toggle("dark", darkTheme.value)
 }
-provide('darkTheme', { darkTheme, toggleTheme })
+provide("darkTheme", { darkTheme, toggleTheme })
 
 watch(darkTheme, (newValue) => {
-  localStorage.setItem('darkTheme', newValue)
+  localStorage.setItem("darkTheme", newValue)
 })
 onMounted(() => {
   if (darkTheme.value) {
-    document.body.classList.add('dark')
+    document.body.classList.add("dark")
   }
 })
 /* Корзина (start) */
@@ -50,11 +51,11 @@ const removeFromCart = (item) => {
 watch(
   cart,
   () => {
-    localStorage.setItem('cart', JSON.stringify(cart.value))
+    localStorage.setItem("cart", JSON.stringify(cart.value))
   },
   { deep: true },
 )
-provide('cart', {
+provide("cart", {
   cart,
   closeDrawer,
   openDrawer,
@@ -63,6 +64,27 @@ provide('cart', {
 })
 
 /* Корзина (end) */
+
+const addToFavorite = async (item) => {
+  try {
+    if (!item.isFavorite) {
+      const obj = {
+        item_id: item.id,
+      }
+      const { data } = await axios.post("https://8fb2ce8dc0a90345.mokky.dev/favorites", obj)
+      item.isFavorite = true
+      item.favoriteId = data.id
+    } else {
+      await axios.delete(`https://8fb2ce8dc0a90345.mokky.dev/favorites/${item.favoriteId}`)
+      item.isFavorite = false
+      item.favoriteId = null
+    }
+  } catch (e) {
+    console.log(e)
+  }
+}
+
+provide("addToFavorite", addToFavorite)
 </script>
 
 <template>

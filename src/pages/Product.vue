@@ -2,7 +2,7 @@
 import { onMounted, ref, reactive } from "vue"
 import axios from "axios"
 import { useRoute } from "vue-router"
-
+import { inject } from "vue"
 import Gallery from "@/components/Gallery.vue"
 
 const route = useRoute()
@@ -31,18 +31,8 @@ const openGallery = () => {
   galleryOpen.value = true
 }
 
-// Обработчик прогресса слайдера
-// const onProgress = (e) => {
-//   const [swiper, progress] = e.detail
-//   console.log(progress)
-// }
+const addToFavorite = inject("addToFavorite")
 
-// Обработчик смены слайда
-const onSlideChange = (e) => {
-  console.log(e.detail[0].activeIndex)
-}
-
-// console.log(openGallery.value)
 onMounted(fetchItem)
 </script>
 
@@ -95,8 +85,8 @@ onMounted(fetchItem)
           <div class="flex gap-6">
             <img src="/share.svg" class="" alt="" />
             <img
-              :src="!item.isFavorite ? '/like_1.svg' : '/like_2.svg'"
-              @click="(e) => console.log(item)"
+              :src="!item ? '/like_1.svg' : '/like_2.svg'"
+              @click="addToFavorite?.()"
               class=""
               alt=""
             />
