@@ -7,6 +7,7 @@ import CardList from "../components/CardList.vue"
 
 const { cart, addToCart, removeFromCart } = inject("cart")
 const addToFavorite = inject("addToFavorite")
+const addToCartPlus = inject("addToCartPlus")
 const items = ref([])
 const filters = reactive({
   sortBy: "title",
@@ -19,13 +20,6 @@ const onChangeSelect = (event) => {
 const onChangeSearchInput = debounce((event) => {
   filters.searchQuery = event.target.value
 }, 300)
-const addToCartPlus = (item) => {
-  if (item.isAdded) {
-    removeFromCart(item)
-  } else {
-    addToCart(item)
-  }
-}
 
 const fetchFavorites = async () => {
   try {

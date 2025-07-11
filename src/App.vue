@@ -55,6 +55,7 @@ watch(
   },
   { deep: true },
 )
+
 provide("cart", {
   cart,
   closeDrawer,
@@ -62,6 +63,15 @@ provide("cart", {
   removeFromCart,
   addToCart,
 })
+
+const addToCartPlus = (item) => {
+  if (item.isAdded) {
+    removeFromCart(item)
+  } else {
+    addToCart(item)
+  }
+}
+provide("addToCartPlus", addToCartPlus)
 
 /* Корзина (end) */
 

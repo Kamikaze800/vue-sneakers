@@ -1,17 +1,17 @@
 <script setup>
-import { ref, inject, computed } from 'vue'
-import axios from 'axios'
+import { ref, inject, computed } from "vue"
+import axios from "axios"
 
-import DrawerHead from './DrawerHead.vue'
-import CartItem from './CartItem.vue'
-import CartItemList from './CartItemList.vue'
-import InfoBlock from './InfoBlock.vue'
+import DrawerHead from "./DrawerHead.vue"
+import CartItem from "./CartItem.vue"
+import CartItemList from "./CartItemList.vue"
+import InfoBlock from "./InfoBlock.vue"
 
 const props = defineProps({
   totalPrice: Number,
   vatPrice: Number,
 })
-const { cart, closeDrawer } = inject('cart')
+const { cart, closeDrawer } = inject("cart")
 const orderId = ref(null)
 const isCreating = ref(false)
 
@@ -37,7 +37,7 @@ const cartIsEmpty = computed(() => cart.value.length === 0)
 const buttonDisabled = computed(() => isCreating.value || cartIsEmpty.value)
 </script>
 <template>
-  <div @click="closeDrawer" class="fixed left-0 top-0 z-10 h-full w-full bg-black opacity-70"></div>
+  <div @click="closeDrawer" class="fixed left-0 top-0 z-20 h-full w-full bg-black opacity-70"></div>
   <div class="fixed right-0 top-0 z-20 h-full w-96 bg-white p-8 dark:-bg--dark">
     <DrawerHead />
 

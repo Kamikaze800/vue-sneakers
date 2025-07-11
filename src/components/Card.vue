@@ -74,9 +74,18 @@ const colorMap = {
       </swiper-container>
     </div>
     <div class="p-2">
-      <RouterLink :to="{ name: 'Product', params: { id } }"
+      <RouterLink
+        :to="{
+          name: 'Product',
+          params: { id: props.id },
+          query: {
+            isFavorite: props.isFavorite,
+            isAdded: props.isAdded,
+          },
+        }"
         ><p class="line-clamp-2 text-sm lg:text-xl">{{ title }}</p></RouterLink
       >
+
       <div class="flex justify-between">
         <div class="flex flex-row gap-2">
           <span class="text-sm font-bold lg:text-2xl lg:font-semibold">{{ price }} ₽</span>

@@ -1,15 +1,15 @@
-import { createWebHistory, createRouter } from 'vue-router'
+import { createWebHistory, createRouter } from "vue-router"
 
-import Home from './pages/Home.vue'
-import Favorites from './pages/Favorites.vue'
-import Product from './pages/Product.vue'
-import Login from './pages/Auth.vue'
+import Home from "./pages/Home.vue"
+import Favorites from "./pages/Favorites.vue"
+import Product from "./pages/Product.vue"
+import Login from "./pages/Auth.vue"
 
 const routes = [
-  { path: '/', name: 'Home', component: Home },
-  { path: '/login', name: 'Login', component: Login },
-  { path: '/favorites', name: 'Favorites', component: Favorites },
-  { path: '/:id', component: Product, name: 'Product', props: true },
+  { path: "/", name: "Home", component: Home },
+  { path: "/login", name: "Login", component: Login },
+  { path: "/favorites", name: "Favorites", component: Favorites },
+  { path: "/product/:id", component: Product, name: "Product", props: true },
 ]
 
 // for (let i = 0; i < 15; i++) {
