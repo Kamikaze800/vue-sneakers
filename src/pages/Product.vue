@@ -9,23 +9,20 @@ const route = useRoute()
 const { id } = route.params
 const { cart } = inject("cart")
 const item = reactive({})
-const isFavorite = route.query.isFavorite === "true"
-const isAdded = route.query.isAdded === "true"
+
 const fetchItem = async () => {
   try {
     const { data } = await axios.get("https://8fb2ce8dc0a90345.mokky.dev/items", { params: { id } })
     Object.assign(item, data[0]) // создаёт объект, клчами которого являются ключи data[0]
-    // console.log(item.price)
-    // item.value = data[0]
-    // title.value = item.value.title
-    // console.log(item.value.images[0].url)
   } catch (e) {
     console.log(e)
   }
 }
-item.isAdded = isAdded
-item.isFavorite = isFavorite
+item.isFavorite = route.query.isFavorite === "true"
+item.isAdded = route.query.isAdded === "true"
+item.favoriteId = parseInt(route.query.favoriteId)
 
+const showShare = ref(false)
 const selectedSize = ref(null)
 const selectedColor = ref(null)
 
@@ -36,13 +33,38 @@ const openGallery = () => {
 }
 
 const addToFavorite = inject("addToFavorite")
-
+const addToCartPlus = inject("addToCartPlus")
 onMounted(fetchItem)
+
+const showPopup = ref(false)
+const copyLink = async () => {
+  try {
+    await navigator.clipboard.writeText(window.location.href)
+    showPopup.value = true
+    setTimeout(() => {
+      showPopup.value = false
+    }, 2000)
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+const openIndex = ref(null)
+const toggle = (index) => {
+  openIndex.value = openIndex.value === index ? null : index
+}
 </script>
 
 <template>
+  <div @click="() => (showShare = !showShare)" v-if="showShare" class="fixed h-full w-full"></div>
+  <div
+    v-if="showPopup"
+    class="fixed bottom-5 left-1/2 -translate-x-1/2 transform rounded-md -bg--black-soft p-2 text-white shadow-xl"
+  >
+    скопировано
+  </div>
   <div class="flex flex-col justify-center lg:flex-row">
-    <div class="flex h-[450px]">
+    <div class="flex sm:h-[450px]">
       <!-- Миниатюры (левый вертикальный слайдер) -->
       <swiper-container
         class="hidden max-h-[300px] w-[100px] sm:block"
@@ -58,7 +80,7 @@ onMounted(fetchItem)
       </swiper-container>
       <!-- биг слайдер -->
       <swiper-container
-        class="max-w-[500px] bg-white"
+        class="w-11/12 bg-white sm:max-w-[450px]"
         slides-per-view="1"
         :centered-slides="true"
         id="gallery-main"
@@ -66,7 +88,11 @@ onMounted(fetchItem)
         pagination="true"
       >
         <swiper-slide class="" v-for="(image, index) in item.images" :key="index">
-          <img :src="image.url" class="m-auto h-[450px] max-w-[500px] object-contain" alt="" />
+          <img
+            :src="image.url"
+            class="w-11/12 object-contain sm:h-[450px] sm:max-w-[450px]"
+            alt=""
+          />
         </swiper-slide>
       </swiper-container>
     </div>
@@ -79,7 +105,7 @@ onMounted(fetchItem)
         </div>
       </div>
       <div class="fixed bg-slate-500"></div>
-      <div class="flex max-w-[700px] flex-col px-4">
+      <div class="flex max-w-[560px] flex-col px-4">
         <!-- основной текст -->
         <h1 class="text-xl">{{ item?.title }}</h1>
         <div class="flex justify-between">
@@ -88,11 +114,25 @@ onMounted(fetchItem)
             <p class="text-sm text-[#716969] line-through">{{ item?.price }} ₽</p>
           </div>
           <div class="flex gap-6">
-            <img src="/share.svg" class="" alt="" />
             <img
-              :src="!isFavorite ? '/like_1.svg' : '/like_2.svg'"
-              @click="addToFavorite"
-              class=""
+              @click="() => (showShare = !showShare)"
+              src="/share.svg"
+              class="cursor-pointer"
+              alt=""
+            />
+
+            <div
+              v-if="showShare"
+              @click="copyLink"
+              class="absolute right-16 z-10 mt-10 flex h-[40px] w-[210px] cursor-pointer items-center justify-center rounded-md bg-white shadow-xl"
+            >
+              <img src="/screpka.svg" class="w-6" alt="" />
+              <p class="">Cкопировать ссылку</p>
+            </div>
+            <img
+              :src="!item.isFavorite ? '/like_1.svg' : '/like_2.svg'"
+              @click="() => addToFavorite(item)"
+              class="cursor-pointer"
               alt=""
             />
           </div>
@@ -140,27 +180,48 @@ onMounted(fetchItem)
           </ul>
         </div>
 
-        <button class="rounded-md bg-[#464646] px-9 py-3 text-sm text-white">
-          ДОБАВИТЬ В КОРЗИНУ {{ item?.price }} ₽
+        <button
+          @click="addToCartPlus(item)"
+          class="rounded-md px-9 py-3 text-sm text-white"
+          :class="item.isAdded ? 'bg-green-500' : 'bg-[#464646]'"
+        >
+          <p v-if="!item.isAdded">ДОБАВИТЬ В КОРЗИНУ {{ item?.price }} ₽</p>
+          <p v-else>В КОРЗИНЕ</p>
         </button>
         <button class="shrink underline">Купить в 1 клик</button>
-        <div>
+        <!-- <div>
           <p class="text-lg font-medium">О товаре</p>
           <ul>
             <li><span>Материал</span> х<span>хлопок</span></li>
-            <!-- <p>{{ item?.description }}</p> -->
-            <p>
-              Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a
-              piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard
-              McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of
-              the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going
-              through the cites of the word in classical literature, discovered the undoubtable
-              source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et
-              Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a
-              treatise on the theory of ethics, very popular during the Renaissance. The first line
-              of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.
-            </p>
+            <p>{{ item?.description }}</p>
+            <p>{{ item.sections }}</p>
           </ul>
+        </div> -->
+        <div class="divide-y rounded-md border-t">
+          <div v-for="(section, index) in item.sections" :key="index">
+            <!-- Заголовок -->
+            <button
+              @click="toggle(index)"
+              class="flex w-full items-center justify-between px-4 py-3 text-left font-medium"
+            >
+              {{ section.title }}
+              <img
+                src="/strelka.svg"
+                class="rotate-180"
+                :class="openIndex === index ? 'rotate-0' : ''"
+              />
+            </button>
+
+            <!-- Контент -->
+            <div v-if="openIndex === index" class="px-4 pb-3 text-sm text-gray-700">
+              <ul class="space-y-1">
+                <li v-for="(val, key) in section.content" :key="key" class="flex justify-between">
+                  <span class="text-gray-500">{{ key }}</span>
+                  <span class="text-black">{{ val }}</span>
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
     </div>

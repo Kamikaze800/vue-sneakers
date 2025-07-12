@@ -1,7 +1,7 @@
 <script setup>
 const props = defineProps({
   id: Number,
-  imageUrl: String,
+  favoriteId: Number,
   images: Array,
   title: String,
   price: Number,
@@ -81,6 +81,7 @@ const colorMap = {
           query: {
             isFavorite: props.isFavorite,
             isAdded: props.isAdded,
+            favoriteId: props.favoriteId,
           },
         }"
         ><p class="line-clamp-2 text-sm lg:text-xl">{{ title }}</p></RouterLink

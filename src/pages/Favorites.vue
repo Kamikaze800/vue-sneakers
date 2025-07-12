@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref, inject } from "vue"
+import { onMounted, ref, inject, watch } from "vue"
 import axios from "axios"
 
 import CardList from "../components/CardList.vue"
@@ -18,7 +18,9 @@ onMounted(async () => {
       ...obj.item,
       isFavorite: true,
       isAdded: cart.value.some((cartItem) => cartItem.id === obj.item.id),
+      favoriteId: obj.id,
     }))
+    console.log(data)
   } catch (e) {
     console.log(e)
   }
