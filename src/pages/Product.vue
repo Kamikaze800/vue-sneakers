@@ -63,7 +63,7 @@ const toggle = (index) => {
   >
     скопировано
   </div>
-  <div class="flex flex-col justify-center lg:flex-row">
+  <div class="flex flex-col lg:flex-row">
     <div class="flex sm:h-[450px]">
       <!-- Миниатюры (левый вертикальный слайдер) -->
       <swiper-container
@@ -97,99 +97,92 @@ const toggle = (index) => {
       </swiper-container>
     </div>
     <!-- <Gallery v-show="galleryOpen.value" class="absolute"></Gallery> -->
-    <div class="flex">
-      <div class="hidden grid-cols-2">
-        <div class="" v-for="image in item?.images || []" :key="image.id">
-          <!-- изображения в фул  -->
-          <img class="" :src="image.url" :alt="`Slide ${image.id}`" @click="console.log()" />
+    <div class="fixed bg-slate-500"></div>
+    <div class="m-auto flex w-[340px] max-w-[560px] flex-col px-2">
+      <!-- основной текст -->
+      <h1 class="mt-[15px] text-xl font-medium uppercase">{{ item?.title }}</h1>
+      <div class="mt-[32px] flex justify-between">
+        <div class="flex flex-row gap-2">
+          <p class="text-2xl font-bold text-red-500">{{ item?.price }} ₽</p>
+          <p class="text-sm text-[#716969] line-through">{{ item?.price }} ₽</p>
+        </div>
+        <div class="flex gap-6">
+          <img
+            @click="() => (showShare = !showShare)"
+            src="/share.svg"
+            class="cursor-pointer"
+            alt=""
+          />
+
+          <div
+            v-if="showShare"
+            @click="copyLink"
+            class="absolute right-16 z-10 mt-10 flex h-[40px] w-[210px] cursor-pointer items-center justify-center rounded-md bg-white shadow-xl"
+          >
+            <img src="/screpka.svg" class="w-6" alt="" />
+            <p class="">Cкопировать ссылку</p>
+          </div>
+          <img
+            :src="!item.isFavorite ? '/like_1.svg' : '/like_2.svg'"
+            @click="() => addToFavorite(item)"
+            class="cursor-pointer"
+            alt=""
+          />
         </div>
       </div>
-      <div class="fixed bg-slate-500"></div>
-      <div class="flex max-w-[560px] flex-col px-4">
-        <!-- основной текст -->
-        <h1 class="text-xl">{{ item?.title }}</h1>
-        <div class="flex justify-between">
-          <div class="flex flex-row gap-2">
-            <p class="text-2xl font-bold text-red-500">{{ item?.price }} ₽</p>
-            <p class="text-sm text-[#716969] line-through">{{ item?.price }} ₽</p>
-          </div>
-          <div class="flex gap-6">
-            <img
-              @click="() => (showShare = !showShare)"
-              src="/share.svg"
-              class="cursor-pointer"
-              alt=""
-            />
 
-            <div
-              v-if="showShare"
-              @click="copyLink"
-              class="absolute right-16 z-10 mt-10 flex h-[40px] w-[210px] cursor-pointer items-center justify-center rounded-md bg-white shadow-xl"
-            >
-              <img src="/screpka.svg" class="w-6" alt="" />
-              <p class="">Cкопировать ссылку</p>
-            </div>
-            <img
-              :src="!item.isFavorite ? '/like_1.svg' : '/like_2.svg'"
-              @click="() => addToFavorite(item)"
-              class="cursor-pointer"
-              alt=""
-            />
-          </div>
-        </div>
-
-        <div class="mb-2">
-          <p class="pb-2">Размер</p>
-          <ul class="flex flex-wrap gap-3">
-            <!--мне надо выделять конкретный элемент li, при нажатии не него
+      <div class="mt-[32px]">
+        <p class="pb-2">Размер</p>
+        <ul class="flex flex-wrap gap-3">
+          <!--мне надо выделять конкретный элемент li, при нажатии не него
             у меня есть key, который
             может ис-->
-            <li
-              v-for="size in item.sizes"
-              :key="size"
-              class="cursor-pointer rounded-md px-2 py-1"
-              :class="{
-                '-bg--dark text-white': selectedSize === size, // Выбранный размер (активный)
-                '-bg--gray_white': selectedSize !== size, // Не выбранный размер (стандартный)
-                'hover:-bg--dark hover:text-white': selectedSize !== size, // Наведение
-              }"
-              @click="selectedSize = size"
-            >
-              {{ size }}
-            </li>
-          </ul>
-        </div>
-        <div class="mb-2">
-          <p class="pb-2">Цвет</p>
-          <ul class="flex gap-3">
-            <li
-              v-for="color in item.colors"
-              :key="color"
-              class="size-7 cursor-pointer rounded-md"
-              :style="{ backgroundColor: color }"
-              :class="{
-                'outline outline-2 outline-offset-2': selectedColor === color, // Выбранный размер (активный)
-              }"
-              @click="
-                () => {
-                  selectedColor = color
-                  console.log(selectedColor)
-                }
-              "
-            ></li>
-          </ul>
-        </div>
+          <li
+            v-for="size in item.sizes"
+            :key="size"
+            class="cursor-pointer rounded-md px-2 py-1"
+            :class="{
+              '-bg--dark text-white': selectedSize === size, // Выбранный размер (активный)
+              '-bg--gray_white': selectedSize !== size, // Не выбранный размер (стандартный)
+              'hover:-bg--dark hover:text-white': selectedSize !== size, // Наведение
+            }"
+            @click="selectedSize = size"
+          >
+            {{ size }}
+          </li>
+        </ul>
+      </div>
+      <div class="mt-[24px]">
+        <p class="pb-2">Цвет</p>
+        <ul class="flex gap-3">
+          <li
+            v-for="color in item.colors"
+            :key="color"
+            class="size-7 cursor-pointer rounded-md"
+            :style="{ backgroundColor: color }"
+            :class="{
+              'outline outline-2 outline-offset-2': selectedColor === color, // Выбранный размер (активный)
+            }"
+            @click="
+              () => {
+                selectedColor = color
+                console.log(selectedColor)
+              }
+            "
+          ></li>
+        </ul>
+      </div>
 
-        <button
-          @click="addToCartPlus(item)"
-          class="rounded-md px-9 py-3 text-sm text-white"
-          :class="item.isAdded ? 'bg-green-500' : 'bg-[#464646]'"
-        >
-          <p v-if="!item.isAdded">ДОБАВИТЬ В КОРЗИНУ {{ item?.price }} ₽</p>
-          <p v-else>В КОРЗИНЕ</p>
-        </button>
-        <button class="shrink underline">Купить в 1 клик</button>
-        <!-- <div>
+      <button
+        @click="addToCartPlus(item)"
+        class="mt-[32px] min-w-[328px] rounded-md px-9 py-3 text-sm font-medium text-white"
+        :class="item.isAdded ? 'bg-green-500' : 'bg-[#464646]'"
+      >
+        <p v-if="!item.isAdded">ДОБАВИТЬ В КОРЗИНУ {{ item?.price }} ₽</p>
+        <p v-else>В КОРЗИНЕ</p>
+      </button>
+      <button class="mt-[16px] shrink font-medium underline">Купить в 1 клик</button>
+      <!-- <div>
           <p class="text-lg font-medium">О товаре</p>
           <ul>
             <li><span>Материал</span> х<span>хлопок</span></li>
@@ -197,30 +190,33 @@ const toggle = (index) => {
             <p>{{ item.sections }}</p>
           </ul>
         </div> -->
-        <div class="divide-y rounded-md border-t">
-          <div v-for="(section, index) in item.sections" :key="index">
-            <!-- Заголовок -->
-            <button
-              @click="toggle(index)"
-              class="flex w-full items-center justify-between px-4 py-3 text-left font-medium"
-            >
-              {{ section.title }}
-              <img
-                src="/strelka.svg"
-                class="rotate-180"
-                :class="openIndex === index ? 'rotate-0' : ''"
-              />
-            </button>
+      <div class="mt-[36px] divide-y rounded-md border-t">
+        <div v-for="(section, index) in item.sections" :key="index">
+          <!-- Заголовок -->
+          <button
+            @click="toggle(index)"
+            class="mb-[16px] mt-[16px] flex w-full items-center justify-between text-left font-medium"
+          >
+            {{ section.title }}
+            <img
+              src="/strelka.svg"
+              class="rotate-180"
+              :class="openIndex === index ? 'rotate-0' : ''"
+            />
+          </button>
 
-            <!-- Контент -->
-            <div v-if="openIndex === index" class="px-4 pb-3 text-sm text-gray-700">
-              <ul class="space-y-1">
-                <li v-for="(val, key) in section.content" :key="key" class="flex justify-between">
-                  <span class="text-gray-500">{{ key }}</span>
-                  <span class="text-black">{{ val }}</span>
-                </li>
-              </ul>
-            </div>
+          <!-- Контент -->
+          <div v-if="openIndex === index" class="px-4 pb-3 text-sm text-gray-700">
+            <ul class="space-y-1">
+              <li
+                v-for="(value, ind) in section.content"
+                :key="ind"
+                class="mb-3 flex justify-between"
+              >
+                <span class="text-gray-500">{{ value.title }}</span>
+                <span class="w-[100px] text-black">{{ value.val }}</span>
+              </li>
+            </ul>
           </div>
         </div>
       </div>

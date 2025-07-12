@@ -114,4 +114,8 @@ provide("addToFavorite", addToFavorite)
   </div>
 </template>
 
-<style></style>
+<style>
+* {
+  font-family: Inter;
+}
+</style>
