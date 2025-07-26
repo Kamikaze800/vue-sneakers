@@ -64,7 +64,7 @@ const toggle = (index) => {
     скопировано
   </div>
   <div class="flex flex-col flex-wrap justify-center lg:flex-row">
-    <div class="grid w-11/12 grid-cols-6 sm:max-w-[600px]">
+    <div class="sm: m-auto grid w-11/12 grid-cols-6 sm:m-0 sm:max-h-[500px] sm:max-w-[600px]">
       <!-- Миниатюры (левый вертикальный слайдер) -->
       <swiper-container
         class="col-span-1 hidden sm:block"
