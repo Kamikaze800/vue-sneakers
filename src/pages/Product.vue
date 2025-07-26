@@ -63,11 +63,11 @@ const toggle = (index) => {
   >
     скопировано
   </div>
-  <div class="flex flex-col lg:flex-row">
-    <div class="flex sm:h-[450px]">
+  <div class="flex flex-col flex-wrap justify-center lg:flex-row">
+    <div class="grid w-11/12 grid-cols-6 sm:max-w-[600px]">
       <!-- Миниатюры (левый вертикальный слайдер) -->
       <swiper-container
-        class="hidden max-h-[300px] w-[100px] sm:block"
+        class="col-span-1 hidden sm:block"
         direction="vertical"
         :slides-per-view="4"
         navigation="false"
@@ -80,7 +80,7 @@ const toggle = (index) => {
       </swiper-container>
       <!-- биг слайдер -->
       <swiper-container
-        class="w-11/12 bg-white sm:max-w-[450px]"
+        class="col-span-6 w-full bg-white sm:col-span-5 sm:h-[300px]"
         slides-per-view="1"
         :centered-slides="true"
         id="gallery-main"
@@ -88,17 +88,13 @@ const toggle = (index) => {
         pagination="true"
       >
         <swiper-slide class="" v-for="(image, index) in item.images" :key="index">
-          <img
-            :src="image.url"
-            class="w-11/12 object-contain sm:h-[450px] sm:max-w-[450px]"
-            alt=""
-          />
+          <img :src="image.url" class="h-full w-full object-contain" alt="" />
         </swiper-slide>
       </swiper-container>
     </div>
     <!-- <Gallery v-show="galleryOpen.value" class="absolute"></Gallery> -->
     <div class="fixed bg-slate-500"></div>
-    <div class="m-auto flex w-[340px] max-w-[560px] flex-col px-2">
+    <div class="m-auto flex w-[340px] max-w-[560px] flex-col px-2 sm:m-0">
       <!-- основной текст -->
       <h1 class="mt-[15px] text-xl font-medium uppercase">{{ item?.title }}</h1>
       <div class="mt-[32px] flex justify-between">
@@ -130,7 +126,14 @@ const toggle = (index) => {
           />
         </div>
       </div>
-
+      <div href="" class="flex">
+        <a href="" class="">
+          <p class="text-sm">
+            Рассрочка от <span class="font-semibold -text--dark">2500 ₽/мес</span>
+          </p>
+        </a>
+        <img src="/strelka.svg" class="w-[6px] rotate-90" alt="" />
+      </div>
       <div class="mt-[32px]">
         <p class="pb-2">Размер</p>
         <ul class="flex flex-wrap gap-3">
@@ -207,7 +210,7 @@ const toggle = (index) => {
 
           <!-- Контент -->
           <div v-if="openIndex === index" class="px-4 pb-3 text-sm text-gray-700">
-            <ul class="space-y-1">
+            <ul v-if="index === 0" class="space-y-1">
               <li
                 v-for="(value, ind) in section.content"
                 :key="ind"
@@ -217,6 +220,7 @@ const toggle = (index) => {
                 <span class="w-[100px] text-black">{{ value.val }}</span>
               </li>
             </ul>
+            <div class="" v-else>{{ section.content }}</div>
           </div>
         </div>
       </div>
@@ -225,7 +229,7 @@ const toggle = (index) => {
 </template>
 
 <style scoped>
-@media (min-width: 701px) {
+@media (min-width: 640px) {
   swiper-container::part(pagination) {
     display: none;
   }
